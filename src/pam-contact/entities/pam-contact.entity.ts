@@ -4,14 +4,12 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('pamcontact')
 export class PamContact {
   @PrimaryGeneratedColumn()
-  contact_id: number;
+  contact_id : number
 
   @Column()
-  
   title: string;
 
   @Column()
-  
   firstname: string;
 
   @Column()
@@ -23,4 +21,10 @@ export class PamContact {
   
   @Column()
   description:string
+
+  @Column()
+  created_date:Date
+
+  @Column()
+  contact_time:Date
 }

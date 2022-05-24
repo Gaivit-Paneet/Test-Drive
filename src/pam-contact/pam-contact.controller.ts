@@ -11,33 +11,34 @@ export class PamContactController {
   constructor(private readonly pamContactService: PamContactService) {}
 
   @Get()
-  findAll() {
-    return this.pamContactService.findAll();
+  async findAll():Promise<PamContact[]>{
+    return await this.pamContactService.findAll();
   }
 
   @Get(":id")
-  findPamcontactById(@Param('id') id : number){
-    return this.pamContactService.findOne(id)
+  async findPamcontactById(@Param('id') id : string){
+    return await this.pamContactService.findOne(+id)
   }
   
 
   @Post()
-  createPamcontact(@Body() newPamContact : CreatePamContactDto) {
+  async createPamcontact(@Body() newPamContact : CreatePamContactDto):Promise<PamContact> {
     let newPamContacts = new PamContact()
     newPamContacts.title = newPamContact.title
     newPamContacts.firstname = newPamContact.firstname
     newPamContacts.email = newPamContact.email
     newPamContacts.tel = newPamContact.tel
     newPamContacts.description = newPamContact.description
+    return await this.pamContactService.createOrUpdate(newPamContacts)
   }
-
   @Put(':id')
-  updatePamcontact(
-    @Param('id') id:number,
-    @Body() newPamContact : CreatePamContactDto
-    )
+  async updates(@Param('id') id : string , @Body() newPamContact:CreatePamContactDto):Promise<PamContact>
   {
-    let newPamContacts = this.pamContactService.findOne(id)
-    console.log(newPamContacts)
+    let newPamContacts = await this.pamContactService.findOne(+id)
+    newPamContact.title = newPamContacts.title
+    newPamContact.firstname = newPamContact.firstname
+    newPamContact.email = newPamContact.email
+    newPamContact.description = newPamContact.description
+    return await this.pamContactService.createOrUpdate(newPamContacts)
   }
 }
